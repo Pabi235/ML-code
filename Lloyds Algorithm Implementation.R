@@ -1,4 +1,5 @@
-dataset=read.csv("SeedsData.csv")
+dataset=read.csv("SeedsData.csv")  # I used the seeds data set from the  UCI machine learning repository 
+                                   # https://archive.ics.uci.edu/ml/datasets/seeds
 
 # Simple Implementation of Lloyds Algorithm for K means clustering.
 
