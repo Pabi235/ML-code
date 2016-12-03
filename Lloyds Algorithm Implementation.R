@@ -43,7 +43,7 @@ k_means=function(data,k){
       label_vector[j]=which.min(cent_dist)
     }        
     
-    #calculate the new eans of the clusters after assigns all observations
+    #calculate the new means of the clusters after assigns all observations
     #to appropriate clusters
     for(i in 1:k){
       assign(paste("cluster_", i, sep = ""), t(data.matrix(apply(get(paste("cluster_",i , sep = ""))                                             ,2,mean))))
@@ -82,15 +82,9 @@ k_means=function(data,k){
     
   }
   
-  n_clus1=length(label_vector_final[which(label_vector_final==1)])
-  n_clus2=length(label_vector_final[which(label_vector_final==2)])
-  n_clus3=length(label_vector_final[which(label_vector_final==3)])
-  
-  
   
   total_var=sum(diag(var(data)))
   #to be used in contructing plot for elbow method.
-  
   
   distances=matrix(0,ncol = 210,nrow = 1)
   for (j in 1:n_obs){
@@ -108,6 +102,6 @@ k_means=function(data,k){
                mean_distance=mean_dist, withinclusvar=within_vect))
 }
 
-k_means(dataset,3)
+k_means(dataset,3)  #give it a try.
 
 
