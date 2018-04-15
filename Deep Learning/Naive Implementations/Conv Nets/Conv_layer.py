@@ -12,7 +12,7 @@ class Data(object):
         self.width=width
         self.height=height
         self.depth=depth
-        n_weight_vals=self.height * self.depth * self.depth
+        n_weight_vals=self.height * self.width * self.depth
         self.data_mtx= np.reshape(np.zeros(n_weight_vals),newshape=(self.depth,self.height,self.width))
         self.delta_data_mtx= np.reshape(np.zeros(n_weight_vals),newshape=(self.depth,self.height,self.width))
         self.vectorized_rand_norm=np.vectorize(self.generate_normal_rand,otypes=[np.float])
@@ -107,8 +107,34 @@ class Naive_Conv_NeuralNet_Layer(object):
                     trn_img_col=self.im2col(trn_img_area)
                     self.output_Tensor.data_mtx[filter_k,hgt_indx,wdth_indx] = self.convolution_op(trn_img_col,filter_col)+self.bias_vol
         return self.output_Tensor
+   
+# hopefully correct implementation of conv back prop
+def Naive_backwardpass(self,X):
+        """
+        :param X:
+        :return:
+        """
+        # this fucking backward pass ...sigh
+        # need to make two backward pass gradient calculations
+        # gradient w.r.t filter weights which will be used for weight updates.
+        # gradient w.r.t current image representation/ current layer which will be used as gradient flow to lower layers
 
-    def Naive_backwardpass(self,X):
+        for filter_j in range(0,len(self.filter_map)):
+            filter_vol=self.filter_map[filter_j]#fix a single filter,reference to a class object. Make sure that changes are inplace and not new copy object
+            for height_indx in range(start=0,stop=self.Output_Height):
+                for width_indx in range(start=0,stop=self.Output_Width): # fixes a single pixel , pixel i,j in layer L the output vol
+                    upstream_grad = np.full(shape=(filter_vol.depth,self.filter_size,self.filter_size),fill_value=self.output_Tensor.delta_data_mtx[filter_j,width_indx,height_indx]) # get dE/d(x_{i,j}) . derivative of error w.r.t fixed pixel
+#                    for filter_depth_indx in range(0,filter_vol.depth):
+                    for filter_height_indx in range(0,filter_vol.height):
+                        for filter_width_indx in range(0,filter_vol.width):
+                            width_stride_dist = self.stride_len * width_indx
+                            height_stride_dist = self.stride_len * height_indx
+                            filter_vol.delta_data_mtx[:,filter_width_indx,filter_height_indx] += self.input_vol.data_mtx[:,width_indx+width_stride_dist,height_indx+height_stride_dist] * upstream_grad
+                            self.input_vol.delta_mtx[:,width_indx+width_stride_dist,height_indx+height_stride_dist] += filter_vol.data_mtx[:,filter_width_indx,filter_height_indx] * upstream_grad
+   
+
+# initial try at backprop changed with something else
+    def Naive_backwardpass_init(self,X):
         """
         :param X:
         :return:
