@@ -32,9 +32,17 @@ class Data(object):
         # weight_patch=
     def get_shape(self):
         return self.data_mtx.shape
-    def set_data(self, i, j, depth, val):
+
+    def set_data_elmt(self, i, j, depth, val):
         self.data_mtx[depth, i, j] = val
-        pass
+
+    def set_padded_mtx(self,input_mtx):
+        self.padded_mtx = input_mtx
+
+    def set_data_mtx(self,input_mtx):
+        self.data_mtx = input_mtx
+        self.depth , self.width,self.height = input_mtx.shape
+        self.delta_data_mtx = np.reshape(np.zeros(self.depth*self.height*self.width), newshape=(self.depth, self.height, self.width))
 
     def get_gradient(self, x, y, depth):
         return self.delta_data_mtx[depth, x, y]
@@ -62,8 +70,8 @@ class Naive_Conv_NeuralNet_Layer(object):
     https://github.com/karpathy/convnetjs
     """
 
-    def __init__(self, input_volume, no_filters, filter_map_dim=3, stride_len=1, zero_padding=0,
-                 k=3):
+    def __init__(self, input_volume, no_filters, filter_map_dim=3, stride_len=1, zero_padding=1,
+                 k=3,weight_init='False'):
         """
         :param input_feature_map_dim:
         :param no_filters:
@@ -81,15 +89,24 @@ class Naive_Conv_NeuralNet_Layer(object):
         self.zero_padding = zero_padding
         self.filter_map = [Data(width=self.filter_size, height=self.filter_size, depth=self.input_vol.depth,weight_init='normal') for i in
                            range(self.n_filters)]
-        self.bias_vol = Data(width=self.filter_size, height=self.filter_size, depth=1)
-
+        self.bias_vol = Data(width=1, height=1, depth=self.input_vol.depth)
+        self.zero_pad_image()  # zero pad once since zero pad parm > 0
         # Initialize weights to be applied to input_feature_map. Sample from N(0,1) as intialization weights
-
+        if weight_init == 'True':
+            pass
         # Output volume sizes
         # TODO: write a function to check if output dim are int types. If not adjust with appropriate zero padding
-        self.Output_Width = int((self.input_vol.width - self.filter_size + 2 * self.zero_padding) / (self.stride_len + 1))
-        self.Output_Height = int((self.input_vol.height - self.filter_size + 2 * self.zero_padding) / (self.stride_len + 1))
-        self.output_Tensor = Data(width=self.Output_Width, height=self.Output_Height, depth=self.n_filters)
+        while (self.width_X-self.filter_size+ 2 * self.zero_padding)/self.stride_len % 1 != 0.0:
+            print('yay')
+            self.zero_pad_image()
+        else:
+            self.Output_Width = int((self.width_X - self.filter_size + 2 * self.zero_padding) / (self.stride_len + 1))
+            self.Output_Height = int((self.height_Y - self.filter_size + 2 * self.zero_padding) / (self.stride_len + 1))
+            self.output_Tensor = Data(width=self.Output_Width, height=self.Output_Height, depth=self.n_filters)
+
+    def filter_val_init(self,filter_vol):
+        for filter_indx in range(len(self.filter_map)):
+            self.filter_map[filter_indx].set_data_mtx(filter_vol[filter_indx,:,:])
 
     def im2col(self, X):
         """
@@ -104,6 +121,27 @@ class Naive_Conv_NeuralNet_Layer(object):
         conv_result = np.sum(np.dot(image_col, filter_col))
         return conv_result
 
+    def zero_pad(X):
+        return np.pad(X,pad_width=(1,1),mode='constant',constant_values=0)
+
+    def zero_pad_image(self):
+        input_img =self.input_vol.data_mtx.copy()
+        input_img_list = input_img.tolist()
+        padded = False
+        while self.zero_padding < self.filter_size and padded==False:
+            if (self.width_X-self.filter_size+ 2 * self.zero_padding)/self.stride_len % 1 == 0.0 :
+                for j in range(0,input_img.shape[0]):
+                    input_img_list[j] = zero_pad(input_img_list[j])
+                    print(input_img_list)
+                padded = True
+            else:
+                self.zero_padding += 1
+        self.input_vol.set_padded_mtx(np.asarray(input_img_list))
+
+    def set_weights(self,input_vol=[]):
+        for j in range(len(self.filter_map)):
+            self.filter_map[j].set_data_mtx(input_vol[j,:,:])
+
     def Naive_forwardpass(self):
         """
         Forward pass of conv net implementing output map generating function.
@@ -116,13 +154,17 @@ class Naive_Conv_NeuralNet_Layer(object):
 
         for filter_k in range(0, self.n_filters):
             filter_col = self.im2col(self.filter_map[filter_k].data_mtx)
-            for wdth_indx in range(0, self.Output_Width):
-                for hgt_indx in range(0, self.Output_Height):
-                    trn_img_area = self.input_vol.data_mtx[:, wdth_indx:(wdth_indx + self.stride_len),
-                                   hgt_indx:(hgt_indx + self.stride_len)]
+            for hgt_indx in range(0, self.Output_Height):
+                for wdth_indx in range(0, self.Output_Width):
+                    wdth_start_index = wdth_indx * self.stride_len
+                    wdth_end_index= wdth_start_index + self.filter_size
+                    hgt_start_index = hgt_indx * self.stride_len
+                    hgt_end_index = hgt_start_index + self.filter_size
+                    trn_img_area = self.input_vol.padded_mtx[:, wdth_start_index:wdth_end_index,
+                                   hgt_start_index:hgt_end_index]
                     trn_img_col = self.im2col(trn_img_area)
                     self.output_Tensor.data_mtx[filter_k, hgt_indx, wdth_indx] = self.convolution_op(trn_img_col,
-                                                                                                     filter_col) + self.bias_vol
+                                                                                                     filter_col) + np.sum(self.bias_vol.data_mtx)
         return self.output_Tensor
 
 
@@ -192,5 +234,3 @@ class Naive_Conv_NeuralNet_Layer(object):
                                     filter_depth_indx, width_indx + width_stride_dist, height_indx + height_stride_dist] += \
                                 filter_vol.data_mtx[
                                     filter_depth_indx, filter_width_indx, filter_height_indx] * upstream_grad
-
-
