@@ -44,6 +44,7 @@ class Data(object):
         self.depth , self.width,self.height = input_mtx.shape
         self.delta_data_mtx = np.reshape(np.zeros(self.depth*self.height*self.width), newshape=(self.depth, self.height, self.width))
 
+
     def get_gradient(self, x, y, depth):
         return self.delta_data_mtx[depth, x, y]
 
@@ -89,7 +90,7 @@ class Naive_Conv_NeuralNet_Layer(object):
         self.zero_padding = zero_padding
         self.filter_map = [Data(width=self.filter_size, height=self.filter_size, depth=self.input_vol.depth,weight_init='normal') for i in
                            range(self.n_filters)]
-        self.bias_vol = Data(width=1, height=1, depth=self.input_vol.depth)
+        self.bias_vol = [Data(width=1, height=1, depth=1) for i in range(self.n_filters)]
         self.zero_pad_image()  # zero pad once since zero pad parm > 0
         # Initialize weights to be applied to input_feature_map. Sample from N(0,1) as intialization weights
         if weight_init == 'True':
@@ -100,8 +101,8 @@ class Naive_Conv_NeuralNet_Layer(object):
             print('yay')
             self.zero_pad_image()
         else:
-            self.Output_Width = int((self.width_X - self.filter_size + 2 * self.zero_padding) / (self.stride_len + 1))
-            self.Output_Height = int((self.height_Y - self.filter_size + 2 * self.zero_padding) / (self.stride_len + 1))
+            self.Output_Width = int((self.width_X - self.filter_size + 2 * self.zero_padding) / (self.stride_len) + 1)
+            self.Output_Height = int((self.height_Y - self.filter_size + 2 * self.zero_padding) / (self.stride_len) + 1)
             self.output_Tensor = Data(width=self.Output_Width, height=self.Output_Height, depth=self.n_filters)
 
     def filter_val_init(self,filter_vol):
@@ -138,9 +139,9 @@ class Naive_Conv_NeuralNet_Layer(object):
                 self.zero_padding += 1
         self.input_vol.set_padded_mtx(np.asarray(input_img_list))
 
-    def set_weights(self,input_vol=[]):
+    def set_weights(self,input_vol):
         for j in range(len(self.filter_map)):
-            self.filter_map[j].set_data_mtx(input_vol[j,:,:])
+            self.filter_map[j].set_data_mtx(input_vol[j,:,:,:])
 
     def Naive_forwardpass(self):
         """
@@ -162,9 +163,10 @@ class Naive_Conv_NeuralNet_Layer(object):
                     hgt_end_index = hgt_start_index + self.filter_size
                     trn_img_area = self.input_vol.padded_mtx[:, wdth_start_index:wdth_end_index,
                                    hgt_start_index:hgt_end_index]
+                    print(trn_img_area)
                     trn_img_col = self.im2col(trn_img_area)
-                    self.output_Tensor.data_mtx[filter_k, hgt_indx, wdth_indx] = self.convolution_op(trn_img_col,
-                                                                                                     filter_col) + np.sum(self.bias_vol.data_mtx)
+                    self.output_Tensor.data_mtx[filter_k,wdth_indx , hgt_indx] = self.convolution_op(trn_img_col,
+                                                                                                     filter_col) + np.sum(self.bias_vol[filter_k].data_mtx)
         return self.output_Tensor
 
 
