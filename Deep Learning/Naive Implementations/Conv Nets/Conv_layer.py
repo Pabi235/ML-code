@@ -73,8 +73,7 @@ class Naive_Conv_NeuralNet_Layer(object):
     https://github.com/karpathy/convnetjs
     """
 
-    def __init__(self, input_volume, no_filters, filter_map_dim=3, stride_len=1, zero_padding=1,
-                 k=3,weight_init='False'):
+    def __init__(self, input_volume, no_filters, filter_map_dim=3, stride_len=1, zero_padding=1,weight_init='False'):
         """
         :param input_feature_map_dim:
         :param no_filters:
@@ -86,7 +85,6 @@ class Naive_Conv_NeuralNet_Layer(object):
         self.num_channels_D, self.width_X, self.height_Y= input_volume.get_shape()
         self.n_filters = no_filters
         self.input_vol = input_volume          # need to change this to a copy of the input in the future  .copy()
-        self.k = k
         self.filter_size = filter_map_dim
         self.stride_len = stride_len
         self.zero_padding = zero_padding
@@ -165,7 +163,6 @@ class Naive_Conv_NeuralNet_Layer(object):
                     hgt_end_index = hgt_start_index + self.filter_size
                     trn_img_area = self.input_vol.padded_mtx[:, wdth_start_index:wdth_end_index,
                                    hgt_start_index:hgt_end_index]
-                    print(trn_img_area)
                     trn_img_col = self.im2col(trn_img_area)
                     self.output_Tensor.data_mtx[filter_k,wdth_indx , hgt_indx] = self.convolution_op(trn_img_col,
                                                                                                      filter_col) + np.sum(self.bias_vol[filter_k].data_mtx)
@@ -191,14 +188,11 @@ class Naive_Conv_NeuralNet_Layer(object):
                                             fill_value=self.output_Tensor.delta_data_mtx[
                                                 filter_j, width_indx, height_indx])  # get dE/d(x_{i,j}) . derivative of error w.r.t fixed pixel
                     w,h,s,f = width_indx,height_indx,self.stride_len,self.filter_size
-                    print('upstream_grad shape is {}'.format(upstream_grad.shape))
-                    print('cordinates are(w_i,w_f,h_i,h_f): {}'.format([w * s,w * s + f,h * s, h * s + f]))
-                    print('input_vol segmentation shape is {}'.format(self.input_vol.padded_mtx[:,w * s:w * s + f,h * s: h * s + f].shape))
                     filter_vol.delta_data_mtx[:, :, :] += self.input_vol.padded_mtx[:,w * s:w * s + f,h * s: h * s + f]\
                                                           * upstream_grad  # element wise multiplication
                     self.input_vol.delta_data_mtx[:,w * s:w * s + f,h * s: h * s + f] += filter_vol.data_mtx[:, :,:] * upstream_grad
         init_boarder_end = self.input_vol.delta_data_mtx.shape[1] - self.zero_padding
-        return self.input_vol.delta_data_mtx[:,self.zero_padding:init_boarder_end,self.zero_padding:init_boarder_end] # return imgae without zero padding
+        return self.input_vol.delta_data_mtx[:,self.zero_padding:init_boarder_end,self.zero_padding:init_boarder_end] # return image without zero padding
 
 
     
