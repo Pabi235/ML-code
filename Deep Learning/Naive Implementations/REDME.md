@@ -1,1 +1,1 @@
-Hi
+Numpy only implementations of various popular layers for deep neural networks. End goal is to implement a numpy only based deep learning application. Need to also write a blog post on the implementation
