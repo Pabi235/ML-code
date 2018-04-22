@@ -38,6 +38,8 @@ class Data(object):
 
     def set_padded_mtx(self,input_mtx):
         self.padded_mtx = input_mtx
+        self.depth , self.width,self.height = input_mtx.shape
+        self.delta_data_mtx = np.reshape(np.zeros(self.depth*self.height*self.width), newshape=(self.depth, self.height, self.width))
 
     def set_data_mtx(self,input_mtx):
         self.data_mtx = input_mtx
@@ -122,8 +124,8 @@ class Naive_Conv_NeuralNet_Layer(object):
         conv_result = np.sum(np.dot(image_col, filter_col))
         return conv_result
 
-    def zero_pad(X):
-        return np.pad(X,pad_width=(1,1),mode='constant',constant_values=0)
+    def zero_pad(self,x):
+        return np.pad(x,pad_width=(1,1),mode='constant',constant_values=0)
 
     def zero_pad_image(self):
         input_img =self.input_vol.data_mtx.copy()
@@ -132,7 +134,7 @@ class Naive_Conv_NeuralNet_Layer(object):
         while self.zero_padding < self.filter_size and padded==False:
             if (self.width_X-self.filter_size+ 2 * self.zero_padding)/self.stride_len % 1 == 0.0 :
                 for j in range(0,input_img.shape[0]):
-                    input_img_list[j] = zero_pad(input_img_list[j])
+                    input_img_list[j] = self.zero_pad(input_img_list[j])
                     print(input_img_list)
                 padded = True
             else:
@@ -183,48 +185,20 @@ class Naive_Conv_NeuralNet_Layer(object):
 
         for filter_j in range(0, len(self.filter_map)):
             filter_vol = self.filter_map[ filter_j]  # fix a single filter,reference to a class object. Make sure that changes are inplace and not new copy object
-            for height_indx in range(start=0, stop=self.Output_Height):
-                for width_indx in range(start=0,stop=self.Output_Width):  # fixes a single pixel , pixel i,j in layer L the output vol
+            for height_indx in range(0, self.Output_Height):
+                for width_indx in range(0,self.Output_Width):  # fixes a single pixel , pixel i,j in layer L the output vol
                     upstream_grad = np.full(shape=(filter_vol.depth, self.filter_size, self.filter_size),
                                             fill_value=self.output_Tensor.delta_data_mtx[
                                                 filter_j, width_indx, height_indx])  # get dE/d(x_{i,j}) . derivative of error w.r.t fixed pixel
                     w,h,s,f = width_indx,height_indx,self.stride_len,self.filter_size
-                    filter_vol.delta_data_mtx[:, :, :] += self.input_vol.data_mtx[:,w * s:w * s + f,h * s: h * s + f]\
+                    print('upstream_grad shape is {}'.format(upstream_grad.shape))
+                    print('cordinates are(w_i,w_f,h_i,h_f): {}'.format([w * s,w * s + f,h * s, h * s + f]))
+                    print('input_vol segmentation shape is {}'.format(self.input_vol.padded_mtx[:,w * s:w * s + f,h * s: h * s + f].shape))
+                    filter_vol.delta_data_mtx[:, :, :] += self.input_vol.padded_mtx[:,w * s:w * s + f,h * s: h * s + f]\
                                                           * upstream_grad  # element wise multiplication
-                    self.input_vol.delta_mtx[:,w * s:w * s + f,h * s: h * s + f] += filter_vol.data_mtx[:, :,:] * upstream_grad
+                    self.input_vol.delta_data_mtx[:,w * s:w * s + f,h * s: h * s + f] += filter_vol.data_mtx[:, :,:] * upstream_grad
+        init_boarder_end = self.input_vol.delta_data_mtx.shape[1] - self.zero_padding
+        return self.input_vol.delta_data_mtx[:,self.zero_padding:init_boarder_end,self.zero_padding:init_boarder_end] # return imgae without zero padding
 
 
-
-
-                            # initial try at backprop changed with something else
-
-
-    def Naive_backwardpass_init(self):
-        """
-        :param X:
-        :return:
-        """
-        # this fucking backward pass ...sigh
-        # need to make two backward pass gradient calculations
-        # gradient w.r.t filter weights which will be used for weight updates.
-        # gradient w.r.t current image representation/ current layer which will be used as gradient flow to lower layers
-
-        for filter_j in range(0, len(self.filter_map)):
-            filter_vol = self.filter_map[filter_j]  # fix a single filter
-            for height_indx in range(start=0, stop=self.Output_Height):
-                for width_indx in range(start=0,
-                                        stop=self.Output_Width):  # fixes a single pixel , pixel i,j in layer L the output vol
-                    upstream_grad = self.input_vol.get_gradient(filter_j, width_indx,
-                                                                height_indx)  # get dE/d(x_{i,j}) . derivative of error w.r.t fixed pixel
-                    for filter_depth_indx in range(0, filter_vol.depth):
-                        for filter_height_indx in range(0, filter_vol.height):
-                            for filter_width_indx in range(0, filter_vol.width):  # for fixed w^l_{m,n,c}
-                                width_stride_dist = self.stride_len * width_indx
-                                height_stride_dist = self.stride_len * height_indx
-                                filter_vol.delta_data_mtx[filter_depth_indx, filter_width_indx, filter_height_indx] += \
-                                self.input_vol.data_mtx[
-                                    filter_depth_indx, width_indx + width_stride_dist, height_indx + height_stride_dist] * upstream_grad
-                                self.input_vol.delta_mtx[
-                                    filter_depth_indx, width_indx + width_stride_dist, height_indx + height_stride_dist] += \
-                                filter_vol.data_mtx[
-                                    filter_depth_indx, filter_width_indx, filter_height_indx] * upstream_grad
+    
