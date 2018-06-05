@@ -1,3 +1,9 @@
+# Code for implementation of forward pass of retrained MobileNet
+#Borrowed heavily from 
+#Tensorflow transfer learning image classification tutorial: https://www.tensorflow.org/tutorials/image_retraining
+#Multi thread for faster processing borrowed from : Dat Tran and his blog article :https://towardsdatascience.com/how-to-train-your-own-object-detector-with-tensorflows-object-detector-api-bec72ecfe1d9
+# The internet in general. Thanks dudes.
+#TODO: Comment this code
 
 
 import argparse
