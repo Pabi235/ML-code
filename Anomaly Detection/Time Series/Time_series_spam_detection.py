@@ -81,8 +81,6 @@ for k in range(0,(n_tuples)):
         k, ['t_1', 't_2', 't_3', 't_4', 't_5', 't_6', 't_7', 't_8', 't_9', 't_10', 't_11', 't_12']] = spam_data_normalized.loc[k:(k+11), 'normalized_counts'].values
     date_start, date_end = date_start + 12, date_end + 12
 
-for i in range(0,10):
-    print(i)
 
 three_hour_window_normalized['start_hour']=pd.DatetimeIndex(three_hour_window_normalized['start_time']).hour
 three_hour_window_normalized['end_hour']=pd.DatetimeIndex(three_hour_window_normalized['end_time']).hour
@@ -234,7 +232,7 @@ norm_behave_data_train.to_csv(r'...\norm_behave_data_train.csv')
 norm_behave_data_test
 three_hour_window.to_csv(r'...\three_hour_data.csv')
 norm_behave_data_test.to_csv(r'...\norm_behave_data_test.csv')
-outlier_behave_data.to_csv(r'...\Hollard\outlier_behave_data.csv')
+outlier_behave_data.to_csv(r'...\outlier_behave_data.csv')
 #
 # ts_plot_1=sns.tsplot(data=spam_small,time='five_min_intervals',value='counts')
 # ts_plot=pd.Series(spam_small['counts'], index=pd.DatetimeIndex(spam_small['five_min_intervals']))
