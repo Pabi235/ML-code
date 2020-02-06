@@ -4,15 +4,14 @@ This project implements the Multi-Agent Actor-Critic for Mixed
 Cooperative-Competitive Environments by Rowe et al using a modified two agent
 tennis playing env from Unity as a test case. <br>
 
-### Algorithmic gaols and contributions of Rowe et al
+### Algorithmic goals and contributions of Rowe et al
 - Traditional Q-learning (in the multi-agent case)difficulty is challenged
 by an inherent non-stationarity of the environment, while
 policy gradient suffers from a variance that increases as the number of agents grows.
 
-- THE Authors adapt the DDPG algorithm to the multi agent setting by proposing each agent have
- centralised(by centralised we mean that knowledge of the other agent policies are needed by each agent
-  in order to calculate its  own Q function ) action-value function that takes as input the actions of all
-agents. Additionally the have a decentralised actor network is used to take actions in the environment
+- The Authors adapt the DDPG algorithm to the multi agent setting by proposing each agent has a
+ centralised Q function (by centralised we mean that knowledge of the other agent policies are needed by each agent
+  in order to calculate its  own Q function ) . Additionally the have a decentralised actor network is used to take actions in the environment
 
 #### Model Architecture
 

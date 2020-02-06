@@ -68,7 +68,7 @@ pip install -r requirements.txt (Python 2), or pip3 install -r requirements.txt 
 
 
 ### Instructions
-Run file `Tennis.ipynb` to run the agent.
+Run file `TennisCollaborationAndCompetition.ipynb` in a Jupyter notebook/lab to train the agent.
 
 ### Files
 * `TennisCollaborationAndCompetition.ipynb` Instantiates the tennis environment, implements DDPG agents with two options
