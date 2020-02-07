@@ -8,7 +8,7 @@
 This repository contains an implementation of the  Multi-Agent Actor-Critic for Mixed Cooperative-Competitive Environments paper using Deep Deterministic Policy Gradient agents to the Tennis UnityML Environment
 
 ### Paper
-* "Multi-Agent Actor-Critic for Mixed Cooperative-Competitive Environments", Lowe et al, 2015<br>
+* "Multi-Agent Actor-Critic for Mixed Cooperative-Competitive Environments", Lowe et al, 2017<br>
 https://arxiv.org/abs/1706.02275 <br>
 
 [Tennis](https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Learning-Environment-Examples.md#tennis)
