@@ -144,7 +144,7 @@ uvloop==0.8.1
 vega==0.4.4
 vincent==0.4.4
 wcwidth==0.1.7
-Werkzeug==0.14.1
+Werkzeug==0.15.3
 widgetsnbextension==3.1.0
 wptools==0.4.7
 xlrd==1.1.0
