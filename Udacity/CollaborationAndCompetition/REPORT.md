@@ -30,6 +30,8 @@ robust to many hyperparameters working under a wide variety of buffer sizes, lea
 ###### Code:
   In my code the standard MADDPG is instantiated as `maddpgagent = MADDPG(0,use_inferred_policies = True)`
 
+![Plot of Scores for Approach 1](https://github.com/Pabi235/ML-code/blob/master/Udacity/CollaborationAndCompetition/CompetitorScores.png)
+
 #### Approach 2
 
 My second approach relaxed the assumption of access to competitor policies and instead approximates them as suggested in section 4.2 of the paper. As stated in the paper:
@@ -48,12 +50,18 @@ rather than sampling.*
  This method was highly sensitive to the choice in hyperparameters and the training process
 was significantly less stable. The time taken to solve the environment (measured in number of episodes taken to learn an environment solving policy) was nearly 2X of the first approach.  See InferredCompetitorScores.png for the performance of this approach.
 
+
 ###### Code:
   In my code the MADDPG with approximate actors is instantiated as `maddpgagent_competitors = MADDPG(0,use_inferred_policies = False,competitor_policies = [])`
+
+![Plot of Scores for Approach 2](https://github.com/Pabi235/ML-code/blob/master/Udacity/CollaborationAndCompetition/InferredCompetitorScores.png)
 
 ### Plot of Rewards
 
 - See CompetitorScores.png
+
+
+
 - See InferredCompetitorScores.png
 
 
