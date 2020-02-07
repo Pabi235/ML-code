@@ -21,11 +21,13 @@ https://arxiv.org/abs/1706.02275 <br>
 Set-up: Two-player game where agents control rackets to hit a ball over the net.
 Goal: The agents must hit the ball so that the opponent cannot hit a valid return.
 
-Agents: The environment contains two agent with same Behavior Parameters. After training you can check the Use Heuristic checkbox on one of the Agents to play against your trained model.
+Agents: The environment contains two agent with same Behaviour Parameters. After training you can check the Use Heuristic checkbox on one of the Agents to play against your trained model.
 
 Agent Reward Function (independent):
 +1.0 To the agent that wins the point. An agent wins a point by preventing the opponent from hitting a valid return.
 -1.0 To the agent who loses the point.
+
+Thus, the goal of each agent is to keep the ball in play.
 
 Behavior Parameters:
 Vector Observation space: 8 variables corresponding to position, velocity and orientation of ball and racket.
@@ -74,6 +76,6 @@ Run file `TennisCollaborationAndCompetition.ipynb` in a Jupyter notebook/lab to 
 * `TennisCollaborationAndCompetition.ipynb` Instantiates the tennis environment, implements DDPG agents with two options
 1. Knowledge of competitor policies
 2. Approximating competitor policies
-Implements Multi Agent training algorithm by Rowe et al. If use_inferred_policies = True  approximates of competitor policies are implemented and the continuous actions are using to be sampled from a Gaussian distribution   
+Implements Multi Agent training algorithm by Rowe et al. If MADDPG(use_inferred_policies = True)  approximates of competitor policies are implemented and the continuous actions are using to be sampled from a multi-variate Gaussian distribution   
 * `networkforall.py` pytorch model architectures for actor , critic and inferred policies
 * ` * pth` model weights for the various actor and critic methods
