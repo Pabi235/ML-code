@@ -53,3 +53,24 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+
+############# Scala ###############
+
+*.class
+*.log
+
+# sbt specific
+.cache
+.history
+.lib/
+dist/*
+target/
+lib_managed/
+src_managed/
+project/boot/
+project/plugins/project/
+
+# Scala-IntelliJ-IDEA  specific
+.scala_dependencies
+.worksheet
+.idea
