@@ -1,0 +1,38 @@
+[0m[[0m[0mdebug[0m] [0m[0mjavaOptions: Vector()[0m
+[0m[[0m[0mdebug[0m] [0m[0mForking tests - parallelism = false[0m
+[0m[[0m[0mdebug[0m] [0m[0mCreate a single-thread test executor[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunner for com.novocode.junit.JUnitFramework produced 1 initial tasks for 1 tests.[0m
+[0m[[0m[0mdebug[0m] [0m[0m  Running TaskDef(forcomp.AnagramsSuite, sbt.ForkMain$AnnotatedFingerscan@76365ec7, false, [SuiteSelector])[0m
+[0m[[0m[0minfo[0m] [0m[0m[34mTest run started[0m[0m
+[0m[[0m[0minfo[0m] [0m[0mTest forcomp.[33mAnagramsSuite[0m.[36mdictionaryByOccurrences.get: eat (10pts)[0m started[0m
+[0m[[0m[0mdebug[0m] [0m[0mTest forcomp.[33mAnagramsSuite[0m.[36mdictionaryByOccurrences.get: eat (10pts)[0m finished, took 0.662 sec[0m
+[0m[[0m[0minfo[0m] [0m[0mTest forcomp.[33mAnagramsSuite[0m.[36msentenceOccurrences: abcd e (5pts)[0m started[0m
+[0m[[0m[0mdebug[0m] [0m[0mTest forcomp.[33mAnagramsSuite[0m.[36msentenceOccurrences: abcd e (5pts)[0m finished, took 0.001 sec[0m
+[0m[[0m[0minfo[0m] [0m[0mTest forcomp.[33mAnagramsSuite[0m.[36mwordAnagrams player (2pts)[0m started[0m
+[0m[[0m[0mdebug[0m] [0m[0mTest forcomp.[33mAnagramsSuite[0m.[36mwordAnagrams player (2pts)[0m finished, took 0.002 sec[0m
+[0m[[0m[0minfo[0m] [0m[0mTest forcomp.[33mAnagramsSuite[0m.[36mcombinations: [] (8pts)[0m started[0m
+[0m[[0m[0mdebug[0m] [0m[0mTest forcomp.[33mAnagramsSuite[0m.[36mcombinations: [] (8pts)[0m finished, took 0.002 sec[0m
+[0m[[0m[0minfo[0m] [0m[0mTest forcomp.[33mAnagramsSuite[0m.[36msentence anagrams: Linux rulez (10pts)[0m started[0m
+[0m[[0m[31merror[0m] [0m[0mTest forcomp.[33mAnagramsSuite[0m.[31msentence anagrams: Linux rulez (10pts)[0m failed: java.lang.[31mAssertionError[0m: expected:<HashSet(List(Zulu, nil, Rex), List(Rex, Uzi, null), List(rulez, Linux), List(Zulu, Rex, Lin), List(Zulu, Rex, nil), List(Rex, Lin, Zulu), List(Rex, Zulu, nil), List(Lin, Zulu, Rex), List(null, Uzi, Rex), List(Zulu, Lin, Rex), List(Linux, rulez), List(Uzi, null, Rex), List(Uzi, Rex, null), List(Lin, Rex, Zulu), List(nil, Rex, Zulu), List(nil, Zulu, Rex), List(null, Rex, Uzi), List(Rex, Zulu, Lin), List(Rex, nil, Zulu), List(Rex, null, Uzi))> but was:<HashSet(List(Rex, nu, Zulu, ill), List(ex, nu, Zulu, rill), List(urn, Zulu, ill, ex), List(run, Zulu, ill, ex), List(nu, Zulu, ex, rill), List(nu, Zulu, Rex, ill), List(nu, ex, Zulu, rill), List(run, Zulu, ex, ill), List(nu, Zulu, ill, Rex), List(nu, Rex, Zulu, ill), List(run, ex, Zulu, ill), List(ex, urn, Zulu, ill), List(nu, Zulu, rill, ex), List(ex, run, Zulu, ill), List(urn, Zulu, ex, ill), List(urn, ex, Zulu, ill))>, took 0.139 sec[0m
+[0m[[0m[31merror[0m] [0m[0m    at forcomp.AnagramsSuite.sentence anagrams: Linux rulez (10pts)([35mAnagramsSuite.scala[0m:[33m90[0m)[0m
+[0m[[0m[31merror[0m] [0m[0m    ...[0m
+[0m[[0m[0mdebug[0m] [0m[0mTest forcomp.[33mAnagramsSuite[0m.[36msentence anagrams: Linux rulez (10pts)[0m finished, took 0.14 sec[0m
+[0m[[0m[0minfo[0m] [0m[0mTest forcomp.[33mAnagramsSuite[0m.[36msubtract: lard - r (10pts)[0m started[0m
+[0m[[0m[0mdebug[0m] [0m[0mTest forcomp.[33mAnagramsSuite[0m.[36msubtract: lard - r (10pts)[0m finished, took 0.0 sec[0m
+[0m[[0m[0minfo[0m] [0m[0mTest forcomp.[33mAnagramsSuite[0m.[36mwordAnagrams married (2pts)[0m started[0m
+[0m[[0m[0mdebug[0m] [0m[0mTest forcomp.[33mAnagramsSuite[0m.[36mwordAnagrams married (2pts)[0m finished, took 0.001 sec[0m
+[0m[[0m[0minfo[0m] [0m[0mTest forcomp.[33mAnagramsSuite[0m.[36msentence anagrams: [] (10pts)[0m started[0m
+[0m[[0m[0mdebug[0m] [0m[0mTest forcomp.[33mAnagramsSuite[0m.[36msentence anagrams: [] (10pts)[0m finished, took 0.001 sec[0m
+[0m[[0m[0minfo[0m] [0m[0mTest forcomp.[33mAnagramsSuite[0m.[36mwordOccurrences: Robert (3pts)[0m started[0m
+[0m[[0m[0mdebug[0m] [0m[0mTest forcomp.[33mAnagramsSuite[0m.[36mwordOccurrences: Robert (3pts)[0m finished, took 0.001 sec[0m
+[0m[[0m[0minfo[0m] [0m[0mTest forcomp.[33mAnagramsSuite[0m.[36mcombinations: abba (8pts)[0m started[0m
+[0m[[0m[0mdebug[0m] [0m[0mTest forcomp.[33mAnagramsSuite[0m.[36mcombinations: abba (8pts)[0m finished, took 0.001 sec[0m
+[0m[[0m[0minfo[0m] [0m[0mTest forcomp.[33mAnagramsSuite[0m.[36mwordOccurrences: abcd (3pts)[0m started[0m
+[0m[[0m[0mdebug[0m] [0m[0mTest forcomp.[33mAnagramsSuite[0m.[36mwordOccurrences: abcd (3pts)[0m finished, took 0.001 sec[0m
+[0m[[0m[0minfo[0m] [0m[0m[34mTest run finished: [0m[31m1 failed[0m[34m, [0m[34m0 ignored[0m[34m, 11 total, 0.875s[0m[0m
+[0m[[0m[0mdebug[0m] [0m[0m    Produced 0 nested tasks and 11 events.[0m
+[0m[[0m[0mdebug[0m] [0m[0mSummary for JUnit not available.[0m
+[0m[[0m[31merror[0m] [0m[0mFailed: Total 11, Failed 1, Errors 0, Passed 10[0m
+[0m[[0m[31merror[0m] [0m[0mFailed tests:[0m
+[0m[[0m[31merror[0m] [0m[0m	forcomp.AnagramsSuite[0m
+[0m[[0m[31merror[0m] [0m[0m(Test / [31mtest[0m) sbt.TestsFailedException: Tests unsuccessful[0m
