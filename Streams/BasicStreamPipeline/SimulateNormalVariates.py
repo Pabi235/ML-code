@@ -17,9 +17,9 @@ def publish(publisher, topic, events,sleepMeanTime = 5):
             sleep_amount = np.random.randint(sleepMeanTime)
             time.sleep(sleep_amount)
             event_json = {'Variate':event_data,'Timestamp':datetime.utcnow()}
-            publisher.publish(topic,event_json)
+            PubSubByteStr = str(event_json).encode("utf-8")
+            publisher.publish(topic,PubSubByteStr)
     
-         
 def SimulateNormalVariates(topic, mean = 0.0, variance = 1.0,sleepMeanTime = 5,CUM_MAX_EVENTS = 100 ):
     
     counts_eventsPublished = 0
