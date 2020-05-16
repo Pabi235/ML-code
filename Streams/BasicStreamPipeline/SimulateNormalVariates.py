@@ -26,7 +26,7 @@ def SimulateNormalVariates(topic, mean = 0.0, variance = 1.0,sleepMeanTime = 5,C
 
     while counts_eventsPublished <= CUM_MAX_EVENTS:
 
-        Num_events = np.random.randint(50,100,1)
+        Num_events = np.random.randint(1,int(CUM_MAX_EVENTS**0.5),1)
         counts_eventsPublished = counts_eventsPublished + Num_events
         NormalVariates = np.random.normal(loc = mean, scale = variance**0.5, size = Num_events)
         publish(publisher=publisher ,topic=topic,events= NormalVariates,sleepMeanTime = sleepMeanTime)
