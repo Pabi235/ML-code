@@ -76,9 +76,9 @@ public class StreamRandomVariates {
           }
         }));
 
-    if (options.getBigtable()) {
-      BigtableHelper.writeToBigtable(StreamRandomVariates, options);
-    }
+    //if (options.getBigtable()) {
+    //  BigtableHelper.writeToBigtable(StreamRandomVariates, options);
+    //}
 
     StreamRandomVariates.apply("ToBQRow", ParDo.of(new DoFn<VariateInfo, TableRow>() {
       @ProcessElement
