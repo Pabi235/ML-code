@@ -66,13 +66,13 @@ public class StreamRandomVariates {
     Tablefields.add(new TableFieldSchema().setName("RandomValue").setType("FLOAT"));
     TableSchema schema = new TableSchema().setFields(Tablefields);
 
-    PCollection<VariateInfo> StreamRandomVariates = p //
+    PCollection<RandomVariateInfo> StreamRandomVariates = p //
         .apply("GetMessages", PubsubIO.readStrings().fromTopic(topic)) //
-        .apply("ExtractData", ParDo.of(new DoFn<String, VariateInfo>() {  //DoFn<InputType,OutputType>
+        .apply("ExtractData", ParDo.of(new DoFn<String, RandomVariateInfo>() {  //DoFn<InputType,OutputType>
           @ProcessElement
           public void processElement(ProcessContext c) throws Exception {
             String line = c.element();
-            c.output(VariateInfo.newVariateInfo(line));
+            c.output(RandomVariateInfo.newRandomVariateInfo(line));
           }
         }));
 
@@ -80,11 +80,11 @@ public class StreamRandomVariates {
     //  BigtableHelper.writeToBigtable(StreamRandomVariates, options);
     //}
 
-    StreamRandomVariates.apply("ToBQRow", ParDo.of(new DoFn<VariateInfo, TableRow>() {
+    StreamRandomVariates.apply("ToBQRow", ParDo.of(new DoFn<RandomVariateInfo, TableRow>() {
       @ProcessElement
       public void processElement(ProcessContext c) throws Exception {
         TableRow row = new TableRow();
-        VariateInfo info = c.element();
+        RandomVariateInfo info = c.element();
         row.set("timestamp", info.getTimestamp());
         row.set("RandomValue", info.getVariate());
         c.output(row);

@@ -4,20 +4,20 @@ import org.apache.beam.sdk.coders.AvroCoder;
 import org.apache.beam.sdk.coders.DefaultCoder;
 
 @DefaultCoder(AvroCoder.class)
-public class VariateInfo {
+public class RandomVariateInfo {
   private String[] fields;
 
   private enum Field {
     TIMESTAMP, VARIATEVALUE;
   }
 
-  public VariateInfo() {
+  public RandomVariateInfo() {
     // for Avro
   }
 
-  public static VariateInfo newVariateInfo(String line) {
+  public static RandomVariateInfo newRandomVariateInfo(String line) {
     String[] pieces = line.split(",");
-    VariateInfo info = new VariateInfo();
+    RandomVariateInfo info = new RandomVariateInfo();
     info.fields = pieces;
     return info;
   }
