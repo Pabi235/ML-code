@@ -1,4 +1,4 @@
-//package com.google.cloud.training.dataanalyst.sandiego;
+package org.apache.beam.examples.randomsvariablestream;
 
 import org.apache.beam.sdk.coders.AvroCoder;
 import org.apache.beam.sdk.coders.DefaultCoder;
