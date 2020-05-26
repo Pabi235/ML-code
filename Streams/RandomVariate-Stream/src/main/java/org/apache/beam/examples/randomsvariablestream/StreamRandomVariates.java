@@ -22,7 +22,7 @@ import java.util.List;
 
 //import org.apache.beam.runners.dataflow.options.DataflowPipelineOptions;
 import org.apache.beam.sdk.options.StreamingOptions;
-import org.apache.beam.sdk.options.PipelineOptions;
+//import org.apache.beam.sdk.options.PipelineOptions;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.io.gcp.bigquery.BigQueryIO;
 import org.apache.beam.sdk.io.gcp.pubsub.PubsubIO;
@@ -33,10 +33,14 @@ import org.apache.beam.sdk.transforms.DoFn;
 import org.apache.beam.sdk.transforms.ParDo;
 import org.apache.beam.sdk.values.PCollection;
 import org.apache.beam.sdk.extensions.gcp.options.GcpOptions;
+//import org.apache.beam.sdk.options.Validation;
 
 import com.google.api.services.bigquery.model.TableFieldSchema;
 import com.google.api.services.bigquery.model.TableRow;
 import com.google.api.services.bigquery.model.TableSchema;
+
+import org.apache.beam.examples.common.ExampleOptions;
+//import org.apache.beam.examples.common.ExampleUtils;
 
 /**
  * A dataflow pipeline that pulls from Pub/Sub and writes to BigQuery
@@ -48,25 +52,22 @@ import com.google.api.services.bigquery.model.TableSchema;
 @SuppressWarnings("serial")
 public class StreamRandomVariates {
 
-  public static interface MyOptions extends PipelineOptions,StreamingOptions {
-    @Description("Also stream to Bigtable?")
-    @Default.Boolean(false)
-    boolean getBigtable();
-
-    void setBigtable(boolean b);
-
+  public static interface MyOptions extends ExampleOptions,StreamingOptions,GcpOptions {
     //@Description("BigQuery Dataset to write tables to. Must already exist.")
     //@Validation.Required
-    //String getDataset();
+    //@Description("BigQuery Dataset to write tables to. Must already exist.")
+    String getDataset();
 
-    //void setDataset(String value);
-
-    //@Description("Pub/Sub topic to read from")
+    void setDataset(String value);
+    //@Description("BigQuery Dataset to write tables to. Must already exist.")
     //@Validation.Required
-    //String getTopic();
+    @Description("Pub/Sub topic to read from")
+    @Default.String("SimulateNormals")
+    String getTopic();
 
-    //void setTopic(String value);
+    void setTopic(String value);
   }
+
 
   public static void main(String[] args) {
     MyOptions options = PipelineOptionsFactory.fromArgs(args).withValidation().as(MyOptions.class);
