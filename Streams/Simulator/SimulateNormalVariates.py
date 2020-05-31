@@ -16,7 +16,7 @@ def publish(publisher, topic, events,sleepMeanTime = 5):
         for event_data in events:
             sleep_amount = np.random.randint(sleepMeanTime)
             time.sleep(sleep_amount)
-            event_json = str(event_data) + ',' +str(datetime.utcnow()) #{'Variate':event_data,'Timestamp':datetime.utcnow()}
+            event_json = str(datetime.utcnow())  + ',' +str(event_data) # {'Variate':event_data,'Timestamp':datetime.utcnow()}
             PubSubByteStr = str(event_json).encode("utf-8")
             publisher.publish(topic,PubSubByteStr)
     
