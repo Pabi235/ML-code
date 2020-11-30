@@ -251,9 +251,9 @@ object TimeUsage extends TimeUsageInterface {
 
     summed.groupByKey(row => (row.working,row.sex,row.age))
           .agg(
-            round(typed.avg[TimeUsageRow](_.primaryNeeds), 1).as(Encoders.DOUBLE),//typed.avg(_.primaryNeeds),
-            round(typed.avg[TimeUsageRow](_.work), 1).as(Encoders.DOUBLE),//typed.avg(_.work),
-            round(typed.avg[TimeUsageRow](_.other), 1).as(Encoders.DOUBLE)//typed.avg(_.other)
+            round(typed.avg[TimeUsageRow](_.primaryNeeds), 1).as(Encoders.DOUBLE),
+            round(typed.avg[TimeUsageRow](_.work), 1).as(Encoders.DOUBLE),
+            round(typed.avg[TimeUsageRow](_.other), 1).as(Encoders.DOUBLE)
              )
           .map(groupedRow => TimeUsageRow(groupedRow._1._1,groupedRow._1._2,groupedRow._1._3,groupedRow._2,groupedRow._3,groupedRow._4))
           .sort("working","sex","age")
